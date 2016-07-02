@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Sample Datamap Project</title>
+
+<body>
+ <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+ <script src="datamaps.usa.min.js"></script>
+
+<h2>Datamap Playground</h2>
+ <div id="container" style="position: relative; width: 80%; max-height: 80%;"></div>
+  
+     <script>
+
+     var map = new Datamap({
+        scope: 'usa',
+        element: document.getElementById('container'),
+        responsive: true,  //Required for resizing 
+        fills: {
+            defaultFill: '#2E86C1' // The keys in this object map to the "fillKey" of [data] or [bubbles]
+          },
+        geographyConfig: {
+            popupOnHover: false, // Disable default text over state/country
+         	highlightOnHover: false, //Disable state highlight on hover
+        },
+     });
+     
+  
+     d3.select(window).on('resize', function() {
+         map.resize();
+     });
+  
+    
+     
+      
+
+
+
+    	
+
+    	
+
+
+
+     
+     
+
+      </script>
+
+</body>
