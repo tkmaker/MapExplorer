@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Sample Datamap Project</title>
+<style>
+
+.land {
+  fill: #222;
+}
+
+.county-boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.state-boundary {
+  fill: none;
+  stroke: #fff;
+}
+
+</style>
 
 <body>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<script src="http://d3js.org/topojson.v1.min.js"></script>
-	<script src="datamaps.usa.min.js"></script>
-
-<h2>Datamap Example</h2>
- <div id="container" style="position: relative; width: 80%; max-height: 80%;"></div>
+ <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+<script id="us-json" type="application/json" src='js/us.json'></script>
   
-     <script>
+<script>
 
-     var map = new Datamap({
-        scope: 'usa',
-        element: document.getElementById('container'),
-        responsive: true,  //Required for resizing 
-        fills: {
-            defaultFill: '#2E86C1' // The keys in this object map to the "fillKey" of [data] or [bubbles]
-          },
-        geographyConfig: {
-            popupOnHover: false, // Disable default text over state/country
-         	highlightOnHover: false, //Disable state highlight on hover
-        },
-     });
-     
-  
-     d3.select(window).on('resize', function() {
-         map.resize();
-     });
-  
-    
-     
-      
+var width = 960,
+    height = 500;
 
+var projection = d3.geo.albersUsa()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
 
+var path = d3.geo.path()
+    .projection(projection);
 
-    	
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-    	
+var usa_json = document.getElementById("us-json");
 
+d3.json(usa_json, function(error, us) {
+  if (error) throw error;
 
+  svg.insert("path", ".graticule")
+      .datum(topojson.feature(us, us.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
 
-     
-     
+  svg.insert("path", ".graticule")
+      .datum(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b && !(a.id / 1000 ^ b.id / 1000); }))
+      .attr("class", "county-boundary")
+      .attr("d", path);
 
-      </script>
+  svg.insert("path", ".graticule")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "state-boundary")
+      .attr("d", path);
+});
 
+d3.select(self.frameElement).style("height", height + "px");
+
+</script>
 </body>
