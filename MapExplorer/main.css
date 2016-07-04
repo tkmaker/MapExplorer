@@ -13,6 +13,17 @@
   stroke: #fff;
 }
 
+.drag-state {
+  fill: yellow ;	
+}
+
+.drag-state-correct {
+  fill: green ;	
+}
+
+.drag-state-incorrect {
+  fill: red ;	
+}
 /*#content {
 	width:100%;
     background-color: #FAFAD2;
