@@ -3,6 +3,7 @@
 <link href="main.css" rel="stylesheet" type="text/css">
 <body>
 
+<div id="score_text"></div> 
 <div id="map"></div>
 
 
@@ -164,8 +165,9 @@ function dragend(d) {
     		getState();
     }
     else { 
-    	window.alert("Score = ");
+    	window.alert("Done!")
     }
+	document.getElementById('score_text').innerHTML = "Score:"+score;
 
 }
 	

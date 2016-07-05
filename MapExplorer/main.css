@@ -2,6 +2,7 @@
   fill: #2E86C1  ;
 }
 
+
 .county-boundary {
   fill: none;
   stroke: #fff;
@@ -38,6 +39,10 @@
 	position: absolute;
 	float: bottom;
 		background-color: cyan;
+}
+
+#score_text {
+	text-align: center;	
 }
 
 /*svg {
