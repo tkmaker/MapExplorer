@@ -8,20 +8,34 @@
 
 <script src="js/d3.v3.min.js"></script>
 <script src="js/topojson.v1.min.js"></script>
-
+<script src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <script>
 
 var width = 800,
     height = 600;
 
+var window_width  = $(window).width();
+var window_height = $(window).height() ;
+
 //Starting position of state to drag
-var drag_x = 700,
-    drag_y = 300;
+//var drag_x = window_width/5,
+  //  drag_y = window_height/5;
     
 // Accuracy of pixel closeness for dragging state. 
 // Decided how much error margin to allow while dragging states
 var pix_accuracy = 20;
+
+//US state count
+var state_count = 50;
+
+//Array to store indices of states - used to shuffle and get random states to drag
+var states_list = [];
+
+//Used to keep count of states completed
+var state_counter = 0;
+
+var score = 0;
 
 var projection = d3.geo.albersUsa()
     .scale(1000)
@@ -63,26 +77,49 @@ var drag = d3.behavior.drag()
 .on("dragstart", dragstart)
 .on("dragend", dragend);
 
-svgMap.insert("path", ".graticule")
-      .datum(topojson.feature(us, us.objects.states.geometries[12]))
+
+//Initializ states list with indices
+for (var i = 0; i <= state_count ; ++i) {
+	states_list.push(i); 	
+}
+
+
+//Shuffle array so that we get random states to drag
+shuffle(states_list);
+
+//Get first state
+//All subsequent states will be generated after dragend event is done
+getState();
+
+
+//Render a state on the map for the user to drag and drop 
+function getState() {
+	
+	//console.log(state_counter);
+	
+	svgMap.insert("path", ".graticule")
+      .datum(topojson.feature(us, us.objects.states.geometries[states_list[state_counter]]))
       .attr("class", "drag-state")
       .attr("d", path)
       .attr("transform", function(d,i){
-	    	return "translate(" + [ drag_x,drag_y ] + ")" //Starting position of state to drag
-      })
-       .call(drag);
+    	  //This selects a location on bottom right of the map 
+          var cx = Number(-1*path.centroid(d)[0]) + window_width/1.5;
+          var cy = Number(-1*path.centroid(d)[1]) + window_height/2;
+          var coord = [cx,cy];
 
+	      return "translate(" + coord + ")" //Starting position of state to drag
+      })
+      .call(drag);
+}
 
 
 
 function dragstart(d) {
 
-	  //d3.event.sourceEvent.stopPropagation(); // silence other listeners
-	  d.x = drag_x; //Number(d3.select(this).attr("x"));
-	  d.y = drag_y; //Number(d3.select(this).attr("y"));
+	  d.x = Number(-1*path.centroid(d)[0]) + window_width/1.5; 
+	  d.y = Number(-1*path.centroid(d)[1]) + window_height/2; 
 
-	  //console.log ("drag started");
-	  //console.log (d.x,d.y);
+
 	}
 
 function dragmove(d) {
@@ -96,39 +133,59 @@ function dragmove(d) {
 	    	return "translate(" + [ d.x,d.y ] + ")"
 	    });
 	     
-	  
-	   //console.log ("drag move started");
-	   //console.log (d3.event.x,d3.event.y);
-	}
+	 
+}
 
 
 function dragend(d) {
-    //console.log ("drag ended");
     
     //snap to position if you are X pixels or closer
+    // This is a correct answer
     if(d.x > -pix_accuracy && d.x < pix_accuracy && d.y > -pix_accuracy && d.y < pix_accuracy ){
     	d3.select(this).attr("class","drag-state-correct").attr("transform", function(d,i){
         return "translate("+ [0,0] + ")";
       });
+      score += 1;
     }
-    
+    //Incorrect answer
     else {
     	
-    	console.log ("Incorrect!!");
+    	//console.log ("Incorrect!!");
     	
         d3.select(this).attr("class","drag-state-incorrect").attr("transform", function(d,i){
         	return "translate("+ [0,0] + ")";
         });
       
     }
-      //score++;
-      //tries = 0;
+    state_counter +=1;
+    
+    //Stop gettting a new state if we have exhausted all
+    if (state_counter <= state_count) {
+    		getState();
+    }
 
-	}
+}
 	
 
 
+function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
 
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+}
 
  
 </script>
