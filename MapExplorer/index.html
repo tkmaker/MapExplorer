@@ -13,15 +13,11 @@
 
 <script>
 
-var width = 800,
-    height = 600;
+
 
 var window_width  = $(window).width();
 var window_height = $(window).height() ;
 
-//Starting position of state to drag
-//var drag_x = window_width/5,
-  //  drag_y = window_height/5;
     
 // Accuracy of pixel closeness for dragging state. 
 // Decided how much error margin to allow while dragging states
@@ -39,8 +35,8 @@ var state_counter = 0;
 var score = 0;
 
 var projection = d3.geo.albersUsa()
-    .scale(1000)
-    .translate([width / 2, height / 2]);
+    //.scale(2000)
+    .translate([window_width / 2, window_height / 3]);
 
 var path = d3.geo.path()
     .projection(projection);
@@ -48,7 +44,7 @@ var path = d3.geo.path()
 var svgMap = d3.select("#map")
     .append("svg")
     	.attr("width", "100vw")
-    	.attr("height", "70vh")
+    	.attr("height","100vh")
   .append("g");
 
   /*
@@ -104,8 +100,8 @@ function getState() {
       .attr("d", path)
       .attr("transform", function(d,i){
     	  //This selects a location on bottom right of the map 
-          var cx = Number(-1*path.centroid(d)[0]) + window_width/1.5;
-          var cy = Number(-1*path.centroid(d)[1]) + window_height/2;
+          var cx = Number(-1*path.centroid(d)[0]) + window_width/2;
+          var cy = Number(-1*path.centroid(d)[1]) + window_height/1.5;
           var coord = [cx,cy];
 
 	      return "translate(" + coord + ")" //Starting position of state to drag
@@ -117,8 +113,8 @@ function getState() {
 
 function dragstart(d) {
 
-	  d.x = Number(-1*path.centroid(d)[0]) + window_width/1.5; 
-	  d.y = Number(-1*path.centroid(d)[1]) + window_height/2; 
+	  d.x = Number(-1*path.centroid(d)[0]) + window_width/2; 
+	  d.y = Number(-1*path.centroid(d)[1]) + window_height/1.5; 
 
 
 	}
