@@ -6,42 +6,16 @@
              }
          });
          
-         mainApp.config(['$routeProvider', function($routeProvider) {
-            $routeProvider.
-            
-            when('/world', {
-               templateUrl: 'world.htm',
-               controller: 'worldController'
-            }).
-            
-            when('/usa', {
-               templateUrl: 'usa.htm',
-               controller: 'usaController'
-            }).
-            when('/quiz', {
-                templateUrl: 'quiz.htm',
-                controller: 'usaQuizController'
-             }).
-            otherwise({
-               redirectTo: '/world'
-            });
-         }]);
-         
-         mainApp.controller('worldController', function($scope) {
-            $scope.message = "World map here";
-         });
-         
-         mainApp.controller('usaController', function($scope) {
-            $scope.message = "USA map here";
-         });
+     
          
          mainApp.directive("usaChart", function($window) {
         	  return{
-        	    restrict: "EA",
-        	    scope: {data: '=?'},
+        	    restrict: "E",
+        	    replace: false,
+        	    scope: {data: '='},
         	    template : '<div id="map"></div>',
 
-        	    link: function(scope, elem, attrs){
+        	    link: function(scope, element, attrs){
         	    	 var window_width  =  angular.element($window).width; //window.width();
                 	 var window_height = angular.element($window).height;//window.height() ;
 
@@ -63,185 +37,174 @@
 
                 	 var score = 0;
 
-                	 var d3 = $window.d3;
-
+                	 
+                	 
+                	
+                	var svgMap = d3.select(element[0]).select('#map')  
+                	   .append("svg")
+                	   		.attr("width", "100vw")
+                	   		.attr("height","100vh");
+                	   		//.append("g");
+                	 var g = svgMap.append('g');  		;
+                	 //var land = g.append('path');
+                	
                 	 var projection = d3.geo.albersUsa()
-                	     .scale(1000)
-                	     .translate([window_width / 2, window_height / 3]);
+             	    .scale(1000)
+             	    .translate([window_width / 2, window_height / 3]);
 
-                	 var path = d3.geo.path()
-                	     .projection(projection);
-
-                	 /*
-                	 var projectionState = d3.geo.albersUsa()
-                	 .scale(1000)
-                	 .translate([window_width / 2, window_height / 3]);
-
-                	 var pathState = d3.geo.path()
-                	 .projection(projection);
-                	 */
-                	 //var rawSvg = elem[0].getElementsByClassName('map');
-                	 //var rawSvg = elem.find('svg');
-                	 //console.log(rawSvg);
-                	 var svgMap = d3.select(elem[0]).select('#map')
-                	 		.append('svg')
-                	     		.attr("width", "80vw")
-                	     		.attr("height","80vh")
-                	        .append("g");
-
-                	   
-                	 console.log(svgMap);
-
-
-
-                	 //console.log(us);
-                	 console.log(us_geo);
-
+             	var path = d3.geo.path()
+             	    .projection(projection);
+             	
+                	 g.selectAll("path")
+                     .data(us_geo.features)
+                     .enter()
+                     	.append("path")
+                     	.attr("d", path);
                 	 
-                	 
-                	 svgMap.selectAll('path')
-                	 .data(us_geo.features)
-                	 .enter()
-                	 .append("path")
-                	 .attr("d", path)
-                	 .attr("class","land");
+
+                	/*svgMap.selectAll("path")
+                	.data(us_geo.features)
+                	.append("path")
+                	.attr("d", path)
+                	.attr("class","land");
+*/
+                	console.log(svgMap);
+
+var drag = d3.behavior.drag()
+.on("drag", dragmove)
+.on("dragstart", dragstart)
+.on("dragend", dragend);
 
 
-                	 var drag = d3.behavior.drag()
-                	 .on("drag", dragmove)
-                	 .on("dragstart", dragstart)
-                	 .on("dragend", dragend);
+//Initializ states list with indices
+for (var i = 0; i <= state_count ; ++i) {
+	states_list.push(i); 	
+}
 
 
-                	 //Initializ states list with indices
-                	 for (var i = 0; i <= state_count ; ++i) {
-                	 	states_list.push(i); 	
-                	 }
+//Shuffle array so that we get random states to drag
+shuffle(states_list);
+
+//Get first state
+//All subsequent states will be generated after dragend event is done
+getState();
 
 
-                	 //Shuffle array so that we get random states to drag
-                	 shuffle(states_list);
+//Render a state on the map for the user to drag and drop 
+function getState() {
+	
+	console.log(state_counter);
+	console.log(states_list[state_counter]);
+	
 
-                	 //Get first state
-                	 //All subsequent states will be generated after dragend event is done
-                	 getState();
+	
+	var state = svgMap.insert("path")
+	.datum(us_geo.features[states_list[state_counter]])
+	.attr("d", path)
+	.attr("class","drag-state")
+	.attr("transform", function(d,i){
+    	  //This selects a location on bottom right of the map 
+          var cx = Number(-1*path.centroid(d)[0]) + window_width/2;
+          var cy = Number(-1*path.centroid(d)[1]) + window_height/1.5;
+          var coord = [cx,cy];
 
-
-                	 //Render a state on the map for the user to drag and drop 
-                	 function getState() {
-                	 	
-                	 	console.log(state_counter);
-                	 	console.log(states_list[state_counter]);
-                	 	
-
-                	 	
-                	 	var state = svgMap.insert("path")
-                	 	.datum(us_geo.features[states_list[state_counter]])
-                	 	.attr("d", path)
-                	 	.attr("class","drag-state")
-                	 	.attr("transform", function(d,i){
-                	     	  //This selects a location on bottom right of the map 
-                	           var cx = Number(-1*path.centroid(d)[0]) + window_width/2;
-                	           var cy = Number(-1*path.centroid(d)[1]) + window_height/1.5;
-                	           var coord = [cx,cy];
-
-                	 	      return "translate(" + coord + ")" //Starting position of state to drag
-                	       })
-                	       .call(drag);
-                	 	
-                	 	/*
-                	       state.append("text")         // append text
-                	    		// .style("fill", "black")   // fill the text with the colour black
-                	     	//.attr("x", 200)           // set x position of left side of text
-                	     	//.attr("y", 100)           // set y position of bottom of text
-                	     	//.attr("dy", ".35em")           // set offset y position
-                	     	//.attr("text-anchor", "middle") // set anchor y justification
-                	     	.text(function(d) { return "CA"; });
-                	      */
-                	       
-                	 	
-                	 	
-                	 }
+	      return "translate(" + coord + ")" //Starting position of state to drag
+      })
+      .call(drag);
+	
+	/*
+      state.append("text")         // append text
+   		// .style("fill", "black")   // fill the text with the colour black
+    	//.attr("x", 200)           // set x position of left side of text
+    	//.attr("y", 100)           // set y position of bottom of text
+    	//.attr("dy", ".35em")           // set offset y position
+    	//.attr("text-anchor", "middle") // set anchor y justification
+    	.text(function(d) { return "CA"; });
+     */
+      
+	
+	
+}
 
 
 
-                	 function dragstart(d) {
+function dragstart(d) {
 
-                	 	  d.x = Number(-1*path.centroid(d)[0]) + window_width/2; 
-                	 	  d.y = Number(-1*path.centroid(d)[1]) + window_height/1.5; 
-
-
-                	 	}
-
-                	 function dragmove(d) {
-
-                	 	  
-                	 	   d.x += d3.event.dx;
-                	 	   d.y += d3.event.dy;
-                	  
-
-                	 	   d3.select(this).attr("transform", function(d,i){
-                	 	    	return "translate(" + [ d.x,d.y ] + ")"
-                	 	    });
-                	 	     
-                	 	 
-                	 }
+	  d.x = Number(-1*path.centroid(d)[0]) + window_width/2; 
+	  d.y = Number(-1*path.centroid(d)[1]) + window_height/1.5; 
 
 
-                	 function dragend(d) {
-                	     
-                	     //snap to position if you are X pixels or closer
-                	     // This is a correct answer
-                	     if(d.x > -pix_accuracy && d.x < pix_accuracy && d.y > -pix_accuracy && d.y < pix_accuracy ){
-                	     	d3.select(this).attr("class","drag-state-correct").attr("transform", function(d,i){
-                	         return "translate("+ [0,0] + ")";
-                	       });
-                	       score += 1;
-                	     }
-                	     //Incorrect answer
-                	     else {
-                	     	
-                	     	//console.log ("Incorrect!!");
-                	     	
-                	         d3.select(this).attr("class","drag-state-incorrect").attr("transform", function(d,i){
-                	         	return "translate("+ [0,0] + ")";
-                	         });
-                	       
-                	     }
-                	     state_counter +=1;
-                	     
-                	     //Stop gettting a new state if we have exhausted all
-                	     if (state_counter <= state_count) {
-                	     		getState();
-                	     }
-                	     else { 
-                	     	window.alert("Done!")
-                	     }
-                	 	document.getElementById('score_text').innerHTML = "Score:"+score;
+	}
 
-                	 }
-                	 	
+function dragmove(d) {
+
+	  
+	   d.x += d3.event.dx;
+	   d.y += d3.event.dy;
+ 
+
+	   d3.select(this).attr("transform", function(d,i){
+	    	return "translate(" + [ d.x,d.y ] + ")"
+	    });
+	     
+	 
+}
 
 
-                	 function shuffle(array) {
-                	 	  var currentIndex = array.length, temporaryValue, randomIndex;
+function dragend(d) {
+    
+    //snap to position if you are X pixels or closer
+    // This is a correct answer
+    if(d.x > -pix_accuracy && d.x < pix_accuracy && d.y > -pix_accuracy && d.y < pix_accuracy ){
+    	d3.select(this).attr("class","drag-state-correct").attr("transform", function(d,i){
+        return "translate("+ [0,0] + ")";
+      });
+      score += 1;
+    }
+    //Incorrect answer
+    else {
+    	
+    	//console.log ("Incorrect!!");
+    	
+        d3.select(this).attr("class","drag-state-incorrect").attr("transform", function(d,i){
+        	return "translate("+ [0,0] + ")";
+        });
+      
+    }
+    state_counter +=1;
+    
+    //Stop gettting a new state if we have exhausted all
+    if (state_counter <= state_count) {
+    		getState();
+    }
+    else { 
+    	window.alert("Done!")
+    }
+	document.getElementById('score_text').innerHTML = "Score:"+score;
 
-                	 	  // While there remain elements to shuffle...
-                	 	  while (0 !== currentIndex) {
+}
+	
 
-                	 	    // Pick a remaining element...
-                	 	    randomIndex = Math.floor(Math.random() * currentIndex);
-                	 	    currentIndex -= 1;
 
-                	 	    // And swap it with the current element.
-                	 	    temporaryValue = array[currentIndex];
-                	 	    array[currentIndex] = array[randomIndex];
-                	 	    array[randomIndex] = temporaryValue;
-                	 	  }
+function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
 
-                	 	  return array;
-                	 }
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
 
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+}         	 
+                	
                 	 
                 	 
                  
