@@ -1,13 +1,4 @@
- var mainApp = angular.module("mainApp", ['ngRoute']);
- 
-         mainApp.controller ('mainController',function ($scope,$location) {
-             $scope.changeView = function (view) {
-            	 $location.path(view);
-             }
-         });
-         
-     
-         
+
          mainApp.directive("usaChart", function($window) {
         	  return{
         	    restrict: "E",
