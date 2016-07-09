@@ -1,0 +1,48 @@
+.land {
+  fill: #2E86C1  ;
+}
+
+
+.county-boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.state-boundary {
+  fill: none;
+  stroke: #fff;
+}
+
+.drag-state {
+  fill: orange;	
+ }
+
+.drag-state-correct {
+  fill: green ;	
+}
+
+.drag-state-incorrect {
+  fill: red ;	
+}
+/*#content {
+	width:100%;
+    background-color: #FAFAD2;
+}*/
+
+#map {
+	float: middle;
+}
+
+
+#dock {
+	position: absolute;
+	float: bottom;
+		background-color: cyan;
+}
+
+#score_text {
+	text-align: center;	
+}
+
+
