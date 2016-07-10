@@ -1,7 +1,6 @@
 
 mainApp.controller('usaQuizController', function($scope) {
     
-	$scope.showHome = false;
     
 	
  var window_width  = $(window).width();

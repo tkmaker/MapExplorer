@@ -4,11 +4,11 @@
       <title>Map Explorer</title>
       <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
       <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
-       <script src="js/d3.v3.min.js"></script>
-	<script src="js/topojson.v1.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<link href="css/main.css" rel="stylesheet" type="text/css">
-	 <link rel="stylesheet" type="text/css" href="css/ionic.min.css">
+      <script src="js/d3.v3.min.js"></script>
+	  <script src="js/topojson.v1.min.js"></script>
+	  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	  <link href="css/main.css" rel="stylesheet" type="text/css">
+	  <link rel="stylesheet" type="text/css" href="css/ionic.min.css">
 	
 	
    <script src="js/app.js"></script>
@@ -17,32 +17,46 @@
    </head>
    
    <body>
-      <div ng-app = "mainApp" ng-controller="mainController" ng-init="showHome=true">
+      <div ng-app = "mainApp" ng-controller="mainController" ng-init="showMenu=true">
       
-      
-      <div id= "homeMenu" align="center" ng-show="showHome">
-         <img ng-src="images/globe.jpg" ng-click="changeView('world')">World Explorer</img>
-         <img ng-src="images/usa.jpg" ng-click="changeView('usa')">USA Explorer</img>
-         <img ng-src="images/usa.jpg" ng-click="changeView('quiz')">USA Quiz</img>
-	  </div>
-		 
-
+     <div class= "homeMenu" ng-show="showMenu">
+       
+	      <div class="img-with-text">
+	      		<img ng-src="images/globe.jpg"  alt="world image" ng-click="changeView('world');showMenu=false"/>
+				<p>World</p>	
+				</div>
+	       
+	      <div class="img-with-text">
+				<img ng-src="images/usa.jpg"   ng-click="changeView('usa');showMenu=false"/> 
+				<p>USA</p>
+				</div>
+			
+	      <div class="img-with-text">
+				<img ng-src="images/usa.jpg"   ng-click="changeView('quiz');showMenu=false"/>
+				<p>Quiz</p>
+				</div>
+	 </div>
 
          <div ng-view></div>
          
          <script type = "text/ng-template" id = "world.htm">
-            <h2> World </h2>
-            {{showHome}}
+            <div class="homeButton">
+				<button class="button icon-right ion-home" ng-click="changeView('home')">Home</button>
+			</div>
+			<h2> World </h2>
          </script>
          
          <script type = "text/ng-template" id = "usa.htm">
-            <h2> USA </h2>
-            {{showHome}}
+           	<div class="homeButton">
+				<button class="button icon-right ion-home" ng-click="changeView('home')">Home</button>
+			</div>
+			<h2> USA </h2>
          </script>
          
           <script type = "text/ng-template" id = "quiz.htm">
-			<button class="button icon-right ion-home" ng-click=changeView('home')>Home</button>
-			{{showHome}}
+			<div class="homeButton">
+				<button class="button icon-right ion-home" ng-click=changeView('home')>Home</button>
+			</div>
 			<div id="score_text"></div> 
 			<div id="map"> </div>
          </script>

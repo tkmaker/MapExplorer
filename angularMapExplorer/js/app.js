@@ -3,6 +3,9 @@
          mainApp.controller ('mainController',function ($scope,$location) {
              $scope.changeView = function (view) {
             	 $location.path(view);
+            	 if (view = 'home') {
+                     $scope.showMenu = true;
+            	 }
              };
          });
          
@@ -36,7 +39,7 @@
          }]);
          
          mainApp.controller('homeController', function($scope) {
-             $scope.showHome = true;
+             $scope.showMenu = true;
           });
          mainApp.controller('worldController', function($scope) {
             $scope.message = "World map here";
