@@ -36,9 +36,7 @@
          });
          
          
-         mainApp.controller('usaQuizController', function($scope) {
-             $scope.message = "USA quiz here";
-          });        	
+      	
          
          
 			
