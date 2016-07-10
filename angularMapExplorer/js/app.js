@@ -3,10 +3,10 @@
          mainApp.controller ('mainController',function ($scope,$location) {
              $scope.changeView = function (view) {
             	 $location.path(view);
-             }
+             };
          });
          
-         mainApp.config(['$routeProvider', function($routeProvider) {
+         mainApp.config(['$routeProvider', function($routeProvider,$scope) {
             $routeProvider.
             
             when('/world', {
@@ -20,13 +20,24 @@
             }).
             when('/quiz', {
                 templateUrl: 'quiz.htm',
-                controller: 'usaQuizController'
+                controller: 'usaQuizController',
+               
              }).
+             when('/home', {
+                 redirectTo: '/',
+                 controller: 'homeController'
+
+              }).
             otherwise({
-               redirectTo: '/world'
+               redirectTo: '/',
+               controller: 'homeController'
+
             });
          }]);
          
+         mainApp.controller('homeController', function($scope) {
+             $scope.showHome = true;
+          });
          mainApp.controller('worldController', function($scope) {
             $scope.message = "World map here";
          });

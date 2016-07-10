@@ -34,6 +34,9 @@
 	float: top;
 }
 
+#homeMenu{
+	float: bottom;
+}
 
 #dock {
 	position: absolute;
