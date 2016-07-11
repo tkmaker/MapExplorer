@@ -1,7 +1,18 @@
-.land {
-  fill: #2E86C1  ;
+
+.usaLand {
+  fill: #3498DB; ;
 }
 
+
+
+.land {
+  fill: #F4D03F ;
+}
+
+.land:hover {
+  fill:#33CC33;
+  stroke-width: 1px;
+}
 
 .county-boundary {
   fill: none;
@@ -32,10 +43,11 @@
 
 #map {
 	float: top;
+	
 }
 
 .homeButton{
-	float: right;
+	float: left;
 }
 
 
@@ -53,14 +65,25 @@
 
 
 
-#dock {
-	position: absolute;
-	float: bottom;
-		background-color: cyan;
-}
+
 
 #score_text {
 	text-align: center;	
 }
 
+.water {
+	fill: #3498DB;
+}
 
+.countryTooltip {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: #fff;
+  padding: 5px;
+  text-align: left;
+  border: solid #ccc 1px;
+  color: #666;
+  font-size: 14px;
+  font-family: sans-serif;
+}
