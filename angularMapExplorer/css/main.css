@@ -1,12 +1,20 @@
+path {
+  stroke: #666;
+  fill: none;
+  fill-opacity: 0.9;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .usaLand {
   fill: #3498DB; ;
 }
 
 
-
 .land {
   fill: #F4D03F ;
+ 
 }
 
 .land:hover {
@@ -14,16 +22,7 @@
   stroke-width: 1px;
 }
 
-.county-boundary {
-  fill: none;
-  stroke: #fff;
-  stroke-width: .5px;
-}
 
-.state-boundary {
-  fill: none;
-  stroke: #fff;
-}
 
 .drag-state {
   fill: orange;	
@@ -36,10 +35,7 @@
 .drag-state-incorrect {
   fill: red ;	
 }
-/*#content {
-	width:100%;
-    background-color: #FAFAD2;
-}*/
+
 
 #map {
 	float: top;
@@ -49,7 +45,6 @@
 .homeButton{
 	float: left;
 }
-
 
 
 .img-with-text {

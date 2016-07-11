@@ -16,7 +16,7 @@ mainApp.controller('worldController', function($scope) {
 
  var projection = d3.geo.orthographic()
  .scale(235)
- .rotate([0, 0])
+ .rotate([5, 5])
  .translate([window_width / 3, window_height / 3])
 .clipAngle(90);
     
@@ -79,23 +79,7 @@ g.selectAll("path.land")
     .style("top", (d3.event.pageY - 15) + "px");
   });
 
-/*
-//Add country names
-g.selectAll("text")
-.data(worldJson.features)
-.enter()
-.append("svg:text")
-.text(function(d){
-    return d.properties.name;
-})
-.attr("x", function(d){
-    return path.centroid(d)[0];
-})
-.attr("y", function(d){
-    return  path.centroid(d)[1];
-})
-.attr("text-anchor","middle")
-.attr('font-size','pt');
-*/
+
+//console.log(svgMap);
 
 });
