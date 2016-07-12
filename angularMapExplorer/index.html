@@ -6,6 +6,8 @@
       <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
       <script src="js/d3.v3.min.js"></script>
 	  <script src="js/topojson.v1.min.js"></script>
+ 	  <script src="js/d3.geo.zoom.js"></script>
+	  
 	  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	  
 	  <link href="css/main.css" rel="stylesheet" type="text/css">
@@ -53,6 +55,8 @@
          <script type = "text/ng-template" id = "usa.htm">
            	<div class="homeButton">
 				<button class="button icon-right ion-home" ng-click="changeView('home')">Home</button>
+				<div id="map"> </div>
+
 			</div>
 			<h2> USA </h2>
          </script>

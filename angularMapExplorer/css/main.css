@@ -82,3 +82,9 @@ path {
   font-size: 14px;
   font-family: sans-serif;
 }
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+

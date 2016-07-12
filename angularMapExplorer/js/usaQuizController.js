@@ -23,8 +23,8 @@ var state_counter = 0;
 var score = 0;
 
 var projection = d3.geo.albersUsa()
-    .scale(1000)
-    .translate([window_width / 2, window_height / 3]);
+    .scale(window_width/window_height*600)
+    .translate([window_width / 2, window_height / 2.4]);
 
     
 var path = d3.geo.path()
@@ -89,8 +89,8 @@ function getState() {
 	.attr("class","drag-state")
 	.attr("transform", function(d,i){
     	  //This selects a location on bottom right of the map 
-          var cx = Number(-1*path.centroid(d)[0]) + window_width/2;
-          var cy = Number(-1*path.centroid(d)[1]) + window_height/1.5;
+          var cx = Number(-1*path.centroid(d)[0]) + window_width/1.7;
+          var cy = Number(-1*path.centroid(d)[1]) + window_height/1.3;
           var coord = [cx,cy];
 
 	      return "translate(" + coord + ")" //Starting position of state to drag
@@ -115,8 +115,8 @@ function getState() {
 
 function dragstart(d) {
 
-	  d.x = Number(-1*path.centroid(d)[0]) + window_width/2; 
-	  d.y = Number(-1*path.centroid(d)[1]) + window_height/1.5; 
+	  d.x = Number(-1*path.centroid(d)[0]) + window_width/1.7; 
+	  d.y = Number(-1*path.centroid(d)[1]) + window_height/1.3; 
 
 
 	}
