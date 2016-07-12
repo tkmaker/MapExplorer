@@ -35,7 +35,7 @@ var path = d3.geo.path()
 var svgMap = d3.select(document.querySelector('#map')) 
     .append("svg")
     	.attr("width", "100vw")
-    	.attr("height","100vh");
+    	.attr("height","85vh");
     	
    var g = svgMap .append("g");
 
@@ -80,7 +80,7 @@ function getState() {
 	
 	//console.log(state_counter);
 	//console.log(states_list[state_counter]);
-	
+	document.getElementById('stateName').innerHTML = us_geo.features[states_list[state_counter]].properties.NAME;
 
 	
 	var state = svgMap.insert("path")
@@ -165,7 +165,7 @@ function dragend(d) {
     else { 
     	window.alert("Done!")
     }
-	document.getElementById('score_text').innerHTML = "Score:"+score;
+	document.getElementById('scoreText').innerHTML = "Score:"+score;
 
 }
 	

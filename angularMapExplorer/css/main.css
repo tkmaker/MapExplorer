@@ -8,9 +8,12 @@ path {
 }
 
 .usaLand {
-  fill: #3498DB; ;
+  fill: #3498DB ;
 }
 
+.water {
+	fill: #3498DB;
+}
 
 .land {
   fill: #F4D03F ;
@@ -25,21 +28,20 @@ path {
 
 
 .drag-state {
-  fill: orange;	
+  fill: yellow;	
  }
 
 .drag-state-correct {
-  fill: green ;	
+  fill: #2ECC71 ;	
 }
 
 .drag-state-incorrect {
-  fill: red ;	
+  fill: #E74C3C ;	
 }
 
 
 #map {
 	float: top;
-	
 }
 
 .homeButton{
@@ -62,13 +64,24 @@ path {
 
 
 
-#score_text {
+#scoreText {
 	text-align: center;	
+	margin-top: 1%;
+	font-size: 30px;
+	font-family: Arial;
+	color: green;
 }
 
-.water {
-	fill: #3498DB;
+#stateName{
+	float: bottom;
+	margin-left: 30%;
+	text-align: center;
+	font-size: 50px;
+	font-family: Fantasy;
+	color: green;
 }
+
+
 
 .countryTooltip {
   position: absolute;
